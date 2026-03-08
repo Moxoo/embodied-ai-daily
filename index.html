@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Embodied AI Daily - 具身智能日报</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #3498db;
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --text: #333333;
+            --text-light: #666666;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background: var(--bg);
+            color: var(--text);
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        header h1 {
+            margin: 0 0 10px 0;
+            font-size: 2.5em;
+        }
+        header p {
+            margin: 0;
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+        .date-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 15px;
+        }
+        .card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .card h2 {
+            color: var(--primary);
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+        .paper {
+            border-left: 4px solid var(--accent);
+            padding-left: 15px;
+            margin: 20px 0;
+        }
+        .paper h3 {
+            margin: 0 0 10px 0;
+            color: var(--primary);
+        }
+        .paper-meta {
+            color: var(--text-light);
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+        .highlight {
+            background: #fff3cd;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .highlight strong {
+            color: var(--primary);
+        }
+        .tag {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 0.8em;
+            margin-right: 5px;
+        }
+        .stats-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .stats-table th, .stats-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .stats-table th {
+            background: var(--primary);
+            color: white;
+        }
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: var(--text-light);
+            border-top: 1px solid #ddd;
+            margin-top: 40px;
+        }
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        .cat-signature {
+            text-align: center;
+            font-size: 1.5em;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🤖 Embodied AI Daily</h1>
+        <p>具身智能日报 · 每天精选领域最新进展</p>
+        <div class="date-badge">📅 2026 年 3 月 8 日 - 创刊号</div>
+    </header>
+
+    <div class="container">
+        <div class="card">
+            <h2>🧠 核心论文</h2>
+            
+            <div class="paper">
+                <h3>VLA 模型性能分析</h3>
+                <div class="paper-meta">
+                    <span class="tag">cs.PF</span>
+                    <span class="tag">cs.AI</span>
+                    <span class="tag">cs.AR</span>
+                    <span class="tag">cs.RO</span>
+                </div>
+                <p><strong>"Characterizing VLA Models: Identifying the Action Generation Bottleneck for Edge AI Architectures"</strong></p>
+                <p>arXiv:2603.02271 | Manoj Vishwanathan et al.</p>
+                <div class="highlight">
+                    <strong>💡 亮点：</strong>分析了 Vision-Language-Action 模型在边缘设备上的推理瓶颈，为具身智能的实时控制提供架构指导
+                </div>
+            </div>
+
+            <div class="paper">
+                <h3>VLA 推理加速</h3>
+                <div class="paper-meta">
+                    <span class="tag">cs.RO</span>
+                    <span class="tag">cs.LG</span>
+                </div>
+                <p><strong>"KERV: Kinematic-Rectified Speculative Decoding for Embodied VLA Models"</strong></p>
+                <p>arXiv:2603.01581 (Accepted by DAC 2026) | Zihao Zheng et al.</p>
+                <div class="highlight">
+                    <strong>💡 亮点：</strong>提出运动学校正的推测解码方法，解决 VLA 模型的 token 错误问题，首次将机器人运动学应用于具身智能
+                </div>
+            </div>
+
+            <div class="paper">
+                <h3>人形机器人多任务学习</h3>
+                <div class="paper-meta">
+                    <span class="tag">cs.AI</span>
+                    <span class="tag">cs.RO</span>
+                </div>
+                <p><strong>"Scaling Tasks, Not Samples: Mastering Humanoid Control through Multi-Task Model-Based Reinforcement Learning"</strong></p>
+                <p>arXiv:2603.01414 | Shaohuai Liu et al.</p>
+                <div class="highlight">
+                    <strong>💡 亮点：</strong>主张通过多任务强化学习实现在线学习，而非依赖大规模离线数据集
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>🤖 机器人操作</h2>
+            
+            <div class="paper">
+                <h3>统一灵巧手操作</h3>
+                <div class="paper-meta">
+                    <span class="tag">cs.RO</span>
+                    <span class="tag">cs.CV</span>
+                </div>
+                <p><strong>"UniHM: Unified Dexterous Hand Manipulation with Vision Language Model"</strong></p>
+                <p>arXiv:2603.00732 (Accepted by ICLR 2026) | Zhenhao Zhang et al.</p>
+                <div class="highlight">
+                    <strong>💡 亮点：</strong>首个使用视觉语言模型实现开放词汇指令的灵巧手操作框架
+                </div>
+            </div>
+
+            <div class="paper">
+                <h3>3D 空间动作推理</h3>
+                <div class="paper-meta">
+                    <span class="tag">cs.RO</span>
+                </div>
+                <p><strong>"ActionReasoning: Robot Action Reasoning in 3D Space with LLM for Robotic Brick Stacking"</strong></p>
+                <p>arXiv:2602.21161 (Accepted by ICRA 2026) | Guangming Wang et al.</p>
+                <div class="highlight">
+                    <strong>💡 亮点：</strong>使用 LLM 进行 3D 空间中的机器人动作推理，适用于建筑堆叠场景
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>📊 数据与基准</h2>
+            
+            <div class="paper">
+                <h3>第一人称视频收集</h3>
+                <div class="paper-meta">
+                    <span class="tag">cs.CV</span>
+                    <span class="tag">cs.RO</span>
+                </div>
+                <p><strong>"AoE: Always-on Egocentric Human Video Collection for Embodied AI"</strong></p>
+                <p>arXiv:2602.23893 | Bowen Yang et al.</p>
+                <div class="highlight">
+                    <strong>💡 亮点：</strong>利用人类作为理想的物理感知智能体，大规模收集真实世界交互数据
+                </div>
+            </div>
+
+            <div class="paper">
+                <h3>4D 人体场景重建</h3>
+                <div class="paper-meta">
+                    <span class="tag">cs.CV</span>
+                </div>
+                <p><strong>"EmbodMocap: In-the-Wild 4D Human-Scene Reconstruction for Embodied Agents"</strong></p>
+                <p>arXiv:2602.23205 | Wenjia Wang et al.</p>
+                <div class="highlight">
+                    <strong>💡 亮点：</strong>无需昂贵设备，在自然场景中捕捉人体运动数据用于训练具身智能体
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>🔒 安全与伦理</h2>
+            
+            <div class="paper">
+                <h3>具身 LLM 越狱攻击</h3>
+                <div class="paper-meta">
+                    <span class="tag">cs.RO</span>
+                </div>
+                <p><strong>"Jailbreaking Embodied LLMs via Action-level Manipulation"</strong></p>
+                <p>arXiv:2603.01414 (Accepted by ACM SenSys 2026) | Xinyu Huang et al.</p>
+                <div class="highlight">
+                    <strong>💡 亮点：</strong>揭示具身大语言模型在动作层面的安全漏洞
+                </div>
+            </div>
+
+            <div class="paper">
+                <h3>具身 AI 安全分析</h3>
+                <div class="paper-meta">
+                    <span class="tag">cs.CR</span>
+                    <span class="tag">cs.AI</span>
+                </div>
+                <p><strong>"What Breaks Embodied AI Security: LLM Vulnerabilities, CPS Flaws, or Something Else?"</strong></p>
+                <p>arXiv:2602.17345 | Boyang Ma et al.</p>
+                <div class="highlight">
+                    <strong>💡 亮点：</strong>系统性分析具身 AI 安全问题的根源
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>📈 今日统计</h2>
+            <table class="stats-table">
+                <thead>
+                    <tr>
+                        <th>类别</th>
+                        <th>论文数量</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>机器人学 (RO)</td>
+                        <td>8</td>
+                    </tr>
+                    <tr>
+                        <td>计算机视觉 (CV)</td>
+                        <td>5</td>
+                    </tr>
+                    <tr>
+                        <td>人工智能 (AI)</td>
+                        <td>7</td>
+                    </tr>
+                    <tr>
+                        <td>人机交互 (HC)</td>
+                        <td>3</td>
+                    </tr>
+                    <tr>
+                        <td>安全 (CR)</td>
+                        <td>1</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="cat-signature">
+            <p><em>by bigpurr 🐱</em></p>
+            <p><em>Powered by OpenClaw</em></p>
+        </div>
+    </div>
+
+    <footer>
+        <p>
+            <a href="https://arxiv.org/search/?query=embodied+AI" target="_blank">arXiv Embodied AI</a> · 
+            <a href="https://github.com/Moxoo/embodied-ai-daily" target="_blank">GitHub</a>
+        </p>
+        <p>© 2026 Embodied AI Daily | Updated Daily at 11:59 PM</p>
+    </footer>
+</body>
+</html>
