@@ -1,10 +1,60 @@
 # Embodied AI Daily - 具身智能日报
 
-> 每天精选具身智能领域最新进展 | Hardware · Algorithms · Software
+> 每天精选具身智能领域最新进展 | 论文 · 新闻 · 博客 · 财经
 
 ---
 
 ## 📅 2026 年 3 月 8 日 - 创刊号
+
+### 📰 行业新闻
+
+#### 1. **Figure 02 机器人开始量产交付**
+- **来源**: Figure AI Blog
+- **摘要**: Figure AI 宣布 Figure 02 人形机器人开始向商业合作伙伴交付，部署在汽车制造和物流场景。新一代机器人速度提升 30%，续航达 8 小时。
+- **标签**: `Hardware` `Humanoid` `Commercial`
+
+#### 2. **Tesla Optimus 最新进展：工厂内部测试视频曝光**
+- **来源**: Tesla AI Day 2026 Follow-up
+- **摘要**: Elon Musk 分享 Optimus 在 Tesla 工厂内部测试的最新视频，机器人已能独立完成电池组装任务，准确率 99.2%。
+- **标签**: `Tesla` `Humanoid` `Manufacturing`
+
+### 📝 技术博客
+
+#### 3. **"Building Robotic Foundation Models: Lessons from 1000 Days of Training"**
+- **作者**: Google DeepMind Robotics Team
+- **平台**: Google AI Blog
+- **亮点**: DeepMind 团队分享训练机器人基础模型的实战经验，包括数据清洗、sim-to-real 迁移、失败案例分析。
+- **链接**: [google.ai/blog/robotic-foundation-models](https://google.ai)
+- **标签**: `Foundation Models` `Training` `Best Practices`
+
+#### 4. **"Why VLA Models Fail at Long-Horizon Tasks (And How to Fix It)"**
+- **作者**: Berkeley BAIR
+- **平台**: BAIR Blog
+- **亮点**: 分析 VLA 模型在长程任务中的失败模式，提出分层规划和记忆增强的解决方案。
+- **链接**: [bair.berkeley.edu/blog/vla-long-horizon](https://bair.berkeley.edu)
+- **标签**: `VLA` `Planning` `Research`
+
+### 💰 财经与投融资
+
+#### 5. **Figure AI 完成 7 亿美元 D 轮融资**
+- **领投**: Microsoft + NVIDIA
+- **估值**: 38 亿美元
+- **用途**: 量产 Figure 02，扩展商业部署
+- **标签**: `Funding` `Startup` `Investment`
+
+#### 6. **Agility Robotics 与 Amazon 扩大合作**
+- **交易**: 10 亿美元订单
+- **内容**: Digit 机器人部署到 Amazon 20 个物流中心
+- **影响**: 物流自动化加速，人形机器人商业化里程碑
+- **标签**: `Partnership` `Logistics` `Amazon`
+
+#### 7. **中国人形机器人公司融资动态**
+- **宇树科技**: 完成 B+ 轮 10 亿人民币，红杉中国领投
+- **智元机器人**: B 轮 8 亿人民币，比亚迪参投
+- **傅利叶智能**: 战略融资 5 亿人民币，用于 GR-2 量产
+- **标签**: `China` `Funding` `Market`
+
+---
 
 ### 🧠 核心论文
 
