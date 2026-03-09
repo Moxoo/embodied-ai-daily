@@ -43,9 +43,10 @@ class EmbodiedAIDailyCollector:
     def fetch_arxiv_papers(self):
         """获取 arXiv 最新论文"""
         import urllib.request
+        import urllib.parse
         import xml.etree.ElementTree as ET
         
-        keywords = "robot OR agent OR vla OR embodied ai"
+        keywords = "robot+OR+agent+OR+vla+OR+embodied+ai"
         url = f"http://export.arxiv.org/api/query?search_query=all:{keywords}&sortBy=submittedDate&sortOrder=descending&max_results=10"
         
         try:
