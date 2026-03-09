@@ -40,6 +40,55 @@ class EmbodiedAIDailyCollector:
         except Exception as e:
             return False, "", str(e)
     
+    def fetch_github_trending(self):
+        """获取 GitHub 热门项目"""
+        import urllib.request
+        import json
+        
+        # 重点关注的领域和搜索关键词
+        search_queries = [
+            ("openclaw", "OpenClaw 生态"),
+            ("agent+framework", "Agent 框架"),
+            ("mcp+server", "MCP Skill"),
+            ("llm+inference", "模型推理"),
+            ("robotics+ros", "机器人"),
+            ("vla+vision+language+action", "VLA 模型"),
+            ("autonomous+agent", "自主智能体"),
+            ("tool+use+llm", "工具使用"),
+        ]
+        
+        projects = []
+        
+        for query, category in search_queries[:4]:  # 取前4个类别
+            try:
+                # GitHub Search API (不需要 token 的基础搜索)
+                url = f"https://api.github.com/search/repositories?q={query}&sort=updated&order=desc&per_page=3"
+                headers = {
+                    'User-Agent': 'EmbodiedAIDaily/1.0',
+                    'Accept': 'application/vnd.github.v3+json'
+                }
+                
+                req = urllib.request.Request(url, headers=headers)
+                with urllib.request.urlopen(req, timeout=15) as response:
+                    data = json.loads(response.read().decode('utf-8'))
+                    
+                for item in data.get('items', [])[:2]:  # 每个类别取前2个
+                    projects.append({
+                        'name': item['full_name'],
+                        'description': item['description'] or "No description",
+                        'url': item['html_url'],
+                        'stars': item['stargazers_count'],
+                        'language': item['language'] or "Unknown",
+                        'category': category,
+                        'updated': item['updated_at'][:10]
+                    })
+                    
+            except Exception as e:
+                print(f"获取 GitHub 项目失败 ({category}): {e}")
+                continue
+        
+        return projects[:8]  # 最多返回8个项目
+    
     def fetch_arxiv_papers(self):
         """获取 arXiv 最新论文"""
         import urllib.request
@@ -88,19 +137,22 @@ class EmbodiedAIDailyCollector:
         # 获取论文
         papers = self.fetch_arxiv_papers()
         
+        # 获取 GitHub 热门项目
+        github_projects = self.fetch_github_trending()
+        
         # 生成 Markdown
-        md_content = self.generate_markdown(papers)
+        md_content = self.generate_markdown(papers, github_projects)
         self.md_file.write_text(md_content, encoding='utf-8')
         print(f"Markdown 已生成: {self.md_file}")
         
         # 生成 HTML
-        html_content = self.generate_html(papers)
+        html_content = self.generate_html(papers, github_projects)
         self.html_file.write_text(html_content, encoding='utf-8')
         print(f"HTML 已生成: {self.html_file}")
         
-        return len(papers)
+        return len(papers), len(github_projects)
     
-    def generate_markdown(self, papers):
+    def generate_markdown(self, papers, github_projects):
         """生成 Markdown 内容"""
         content = f"""# 具身智能日报 - {self.date_str}
 
@@ -119,13 +171,32 @@ class EmbodiedAIDailyCollector:
 
 """
         
+        # 添加 GitHub 热门项目
+        content += f"""---
+
+## 🔧 GitHub 热门项目 ({len(github_projects)} 个)
+
+"""
+        current_category = ""
+        for project in github_projects:
+            if project['category'] != current_category:
+                current_category = project['category']
+                content += f"\n### {current_category}\n\n"
+            
+            content += f"""**{project['name']}** ⭐ {project['stars']}
+- **语言**: {project['language']} | **更新**: {project['updated']}
+- **描述**: {project['description'][:150]}...
+- **链接**: [{project['url']}]({project['url']})
+
+"""
+        
         content += f"""---
 
 *更新时间: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}*
 """
         return content
     
-    def generate_html(self, papers):
+    def generate_html(self, papers, github_projects):
         """生成 HTML 内容"""
         papers_html = ""
         for i, paper in enumerate(papers, 1):
@@ -138,6 +209,33 @@ class EmbodiedAIDailyCollector:
             </div>
             """
         
+        # GitHub 项目 HTML
+        github_html = ""
+        current_category = ""
+        for project in github_projects:
+            if project['category'] != current_category:
+                if current_category:
+                    github_html += "</div>"
+                current_category = project['category']
+                github_html += f"""<h3 class="category-title">{current_category}</h3><div class="category-section">"""
+            
+            github_html += f"""
+            <div class="project-item">
+                <div class="project-header">
+                    <span class="project-name">{project['name']}</span>
+                    <span class="project-stars">⭐ {project['stars']}</span>
+                </div>
+                <div class="project-meta">
+                    <span class="lang">{project['language']}</span>
+                    <span class="update">更新: {project['updated']}</span>
+                </div>
+                <div class="project-desc">{project['description'][:200]}...</div>
+                <a href="{project['url']}" class="item-link" target="_blank">查看项目 →</a>
+            </div>
+            """
+        if current_category:
+            github_html += "</div>"
+        
         return f"""<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -148,6 +246,29 @@ class EmbodiedAIDailyCollector:
         .header {{ background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px; border-radius: 20px; text-align: center; margin-bottom: 30px; }}
         .paper-item {{ background: white; padding: 20px; border-radius: 10px; margin-bottom: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); }}
         .item-title {{ font-size: 1.2rem; font-weight: 600; margin-bottom: 8px; }}
+        .project-item {{ background: white; padding: 20px; border-radius: 10px; margin-bottom: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); border-left: 4px solid #667eea; }}
+        .project-header {{ display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }}
+        .project-name {{ font-size: 1.1rem; font-weight: 600; }}
+        .project-stars {{ color: #667eea; font-weight: 600; }}
+        .project-meta {{ color: #666; font-size: 0.9rem; margin-bottom: 10px; }}
+        .project-meta span {{ margin-right: 15px; }}
+        .category-title {{ color: #667eea; margin-top: 30px; margin-bottom: 15px; font-size: 1.3rem; }}
+        .lang {{ background: #e8eeff; padding: 2px 8px; border-radius: 10px; }}
+        .item-link {{ color: #667eea; text-decoration: none; font-weight: 500; }}"
+        }}
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>具身智能日报</h1>
+        <div>{self.date_str}</div>
+    </div>
+    <h2>📝 最新论文 ({len(papers)} 篇)</h2>
+    {papers_html}
+    <h2>🔧 GitHub 热门项目 ({len(github_projects)} 个)</h2>
+    {github_html}
+</body>
+</html>"""
         .item-meta {{ color: #666; font-size: 0.9rem; margin-bottom: 10px; }}
         .item-link {{ color: #667eea; text-decoration: none; }}
     </style>
@@ -192,18 +313,18 @@ class EmbodiedAIDailyCollector:
         print("✅ GitHub 推送成功！")
         return True
     
-    def notify_telegram(self, paper_count):
+    def notify_telegram(self, paper_count, project_count):
         """Telegram 通知"""
         print("正在发送 Telegram 通知...")
         # 这里会调用 Telegram API，实际由外部脚本处理
-        print(f"✅ Telegram 通知已发送！今日 {paper_count} 篇论文")
+        print(f"✅ Telegram 通知已发送！今日 {paper_count} 篇论文，{project_count} 个 GitHub 项目")
     
     def run(self):
         """完整流程"""
         print(f"🐱 开始生成 {self.date_str} 的日报...")
         
         # 1. 生成日报
-        paper_count = self.generate_daily()
+        paper_count, project_count = self.generate_daily()
         
         # 2. 推送到 GitHub（在 Telegram 之前）
         if self.push_to_github():
@@ -212,7 +333,7 @@ class EmbodiedAIDailyCollector:
             print("⚠️ GitHub 推送失败，继续发送 Telegram 通知")
         
         # 3. Telegram 通知
-        self.notify_telegram(paper_count)
+        self.notify_telegram(paper_count, project_count)
         
         print(f"🎉 {self.date_str} 日报流程完成！")
 
