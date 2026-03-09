@@ -1,0 +1,22 @@
+{
+  "name": "Embodied AI Daily",
+  "description": "Daily curated news on Embodied AI",
+  "timezone": "Asia/Shanghai",
+  "updateTime": "06:30",
+  "issues": [
+    {
+      "date": "2026-03-09",
+      "issueNumber": 68,
+      "title": "第 68 期",
+      "file": "issues/2026-03-09.html",
+      "url": "https://moxoo.github.io/embodied-ai-daily/issues/2026-03-09.html",
+      "stats": {
+        "news": 0,
+        "blogs": 0,
+        "finance": 0,
+        "papers": 5
+      }
+    }
+  ],
+  "lastUpdated": "2026-03-09T08:59:54.588284"
+}

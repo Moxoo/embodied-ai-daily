@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Embodied AI Daily - 具身智能日报</title>
+    <style>
+        :root { --primary: #2c3e50; --accent: #3498db; --bg: #f8f9fa; --card-bg: #ffffff; --text: #333333; --text-light: #666666; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; line-height: 1.6; margin: 0; padding: 0; background: var(--bg); color: var(--text); }
+        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+        header { background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; padding: 40px 20px; text-align: center; margin-bottom: 30px; }
+        header h1 { margin: 0 0 10px 0; font-size: 2.5em; }
+        header p { margin: 0; opacity: 0.9; font-size: 1.1em; }
+        .latest-badge { background: #e74c3c; color: white; padding: 5px 15px; border-radius: 20px; display: inline-block; margin-top: 15px; font-weight: bold; }
+        .card { background: var(--card-bg); border-radius: 10px; padding: 25px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .card h2 { color: var(--primary); border-bottom: 2px solid var(--accent); padding-bottom: 10px; margin-top: 0; }
+        .latest-preview { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+        .latest-preview h2 { color: white; border-bottom-color: rgba(255,255,255,0.3); }
+        .issue-list { list-style: none; padding: 0; }
+        .issue-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #eee; transition: background 0.2s; }
+        .issue-item:hover { background: #f8f9fa; }
+        .issue-item:last-child { border-bottom: none; }
+        .issue-info { flex: 1; }
+        .issue-date { font-weight: bold; color: var(--primary); font-size: 1.1em; }
+        .issue-number { color: var(--accent); margin-left: 10px; }
+        .issue-stats { font-size: 0.9em; color: var(--text-light); margin-top: 5px; }
+        .issue-link { background: var(--accent); color: white; padding: 8px 16px; border-radius: 5px; text-decoration: none; font-weight: 500; }
+        .issue-link:hover { background: #2980b9; }
+        footer { text-align: center; padding: 30px; color: var(--text-light); border-top: 1px solid #ddd; margin-top: 40px; }
+        footer a { color: var(--accent); text-decoration: none; }
+        .cat-signature { text-align: center; font-size: 1.5em; margin: 20px 0; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🤖 Embodied AI Daily</h1>
+        <p>具身智能日报 · 论文 · 新闻 · 博客 · 财经</p>
+        <div class="latest-badge">📅 每日 06:30 更新 (上海时间)</div>
+    </header>
+    <div class="container">
+
+        <div class="card latest-preview">
+            <h2>📰 最新一期</h2>
+            <div style="font-size: 1.3em; margin-bottom: 15px;">
+                <strong>第 68 期</strong> - 2026 年 03 月 09 日
+            </div>
+            <p style="opacity: 0.9; margin-bottom: 20px;">
+                本期包含最新 arXiv 论文、行业新闻和技术动态。
+            </p>
+            <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 20px;">
+                <span style="background: rgba(255,255,255,0.2); padding: 5px 12px; border-radius: 15px; font-size: 0.9em;">📰 0 条新闻</span>
+                <span style="background: rgba(255,255,255,0.2); padding: 5px 12px; border-radius: 15px; font-size: 0.9em;">📝 0 篇博客</span>
+                <span style="background: rgba(255,255,255,0.2); padding: 5px 12px; border-radius: 15px; font-size: 0.9em;">💰 0 条融资</span>
+                <span style="background: rgba(255,255,255,0.2); padding: 5px 12px; border-radius: 15px; font-size: 0.9em;">🧠 5 篇论文</span>
+            </div>
+            <div style="text-align: center; margin-top: 25px;">
+                <a href="issues/2026-03-09.html" class="issue-link" style="background: white; color: #764ba2; font-size: 1.1em; padding: 12px 30px;">
+                    📖 阅读全文 →
+                </a>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>📚 历史日报</h2>
+            <ul class="issue-list">
+                <li class="issue-item">
+                    <div class="issue-info">
+                        <div class="issue-date">
+                            2026 年 03 月 09 日
+                            <span class="issue-number">第 68 期</span>
+                        </div>
+                        <div class="issue-stats">
+                            📰 0 条新闻 · 📝 0 篇博客 · 💰 0 条融资 · 🧠 5 篇论文 · 总计 5 条
+                        </div>
+                    </div>
+                    <a href="issues/2026-03-09.html" class="issue-link">阅读</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="cat-signature">
+            <p><em>by bigpurr 🐱</em></p>
+            <p><em>Powered by OpenClaw</em></p>
+        </div>
+    </div>
+    <footer>
+        <p>
+            <a href="https://arxiv.org/search/?query=embodied+AI" target="_blank">arXiv Embodied AI</a> · 
+            <a href="https://github.com/Moxoo/embodied-ai-daily" target="_blank">GitHub</a>
+        </p>
+        <p>© 2026 Embodied AI Daily | Updated Daily at 06:30 CST</p>
+    </footer>
+</body>
+</html>
