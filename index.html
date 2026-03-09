@@ -3,92 +3,346 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Embodied AI Daily - 具身智能日报</title>
+    <title>具身智能日报 | Embodied AI Daily</title>
     <style>
-        :root { --primary: #2c3e50; --accent: #3498db; --bg: #f8f9fa; --card-bg: #ffffff; --text: #333333; --text-light: #666666; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; line-height: 1.6; margin: 0; padding: 0; background: var(--bg); color: var(--text); }
-        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
-        header { background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; padding: 40px 20px; text-align: center; margin-bottom: 30px; }
-        header h1 { margin: 0 0 10px 0; font-size: 2.5em; }
-        header p { margin: 0; opacity: 0.9; font-size: 1.1em; }
-        .latest-badge { background: #e74c3c; color: white; padding: 5px 15px; border-radius: 20px; display: inline-block; margin-top: 15px; font-weight: bold; }
-        .card { background: var(--card-bg); border-radius: 10px; padding: 25px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .card h2 { color: var(--primary); border-bottom: 2px solid var(--accent); padding-bottom: 10px; margin-top: 0; }
-        .latest-preview { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
-        .latest-preview h2 { color: white; border-bottom-color: rgba(255,255,255,0.3); }
-        .issue-list { list-style: none; padding: 0; }
-        .issue-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #eee; transition: background 0.2s; }
-        .issue-item:hover { background: #f8f9fa; }
-        .issue-item:last-child { border-bottom: none; }
-        .issue-info { flex: 1; }
-        .issue-date { font-weight: bold; color: var(--primary); font-size: 1.1em; }
-        .issue-number { color: var(--accent); margin-left: 10px; }
-        .issue-stats { font-size: 0.9em; color: var(--text-light); margin-top: 5px; }
-        .issue-link { background: var(--accent); color: white; padding: 8px 16px; border-radius: 5px; text-decoration: none; font-weight: 500; }
-        .issue-link:hover { background: #2980b9; }
-        footer { text-align: center; padding: 30px; color: var(--text-light); border-top: 1px solid #ddd; margin-top: 40px; }
-        footer a { color: var(--accent); text-decoration: none; }
-        .cat-signature { text-align: center; font-size: 1.5em; margin: 20px 0; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            color: white;
+        }
+        
+        header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .mascot {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 50px;
+        }
+        
+        .stat-card {
+            background: rgba(255,255,255,0.95);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-card .icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .stat-card h3 {
+            font-size: 2rem;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+        
+        .stat-card p {
+            color: #666;
+        }
+        
+        .daily-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+        }
+        
+        .daily-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .daily-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            position: relative;
+        }
+        
+        .card-date {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+        
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .card-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+        
+        .card-body {
+            padding: 25px;
+        }
+        
+        .card-stats {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .card-stat {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .card-stat span {
+            font-size: 1.2rem;
+        }
+        
+        .card-preview {
+            color: #666;
+            line-height: 1.6;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .card-footer {
+            padding: 20px 25px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .tag {
+            background: #f0f0f0;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            color: #666;
+        }
+        
+        .read-more {
+            color: #667eea;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 30px;
+            color: white;
+            opacity: 0.8;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 60px;
+            color: white;
+        }
+        
+        .loading-spinner {
+            font-size: 3rem;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
-    <header>
-        <h1>🤖 Embodied AI Daily</h1>
-        <p>具身智能日报 · 论文 · 新闻 · 博客 · 财经</p>
-        <div class="latest-badge">📅 每日 06:30 更新 (上海时间)</div>
-    </header>
     <div class="container">
-
-        <div class="card latest-preview">
-            <h2>📰 最新一期</h2>
-            <div style="font-size: 1.3em; margin-bottom: 15px;">
-                <strong>第 68 期</strong> - 2026 年 3 月 9 日
+        <header>
+            <div class="mascot">🐱</div>
+            <h1>具身智能日报</h1>
+            <p>Embodied AI Daily - 每日追踪机器人与 AI 前沿</p>
+        </header>
+        
+        <div class="stats">
+            <div class="stat-card">
+                <div class="icon">📰</div>
+                <h3 id="total-news">0</h3>
+                <p>科技新闻</p>
             </div>
-            <p style="opacity: 0.9; margin-bottom: 20px;">
-                本期包含 2 条新闻、1 篇博客、5 条融资、5 篇论文。
-            </p>
-            <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 20px;">
-                <span style="background: rgba(255,255,255,0.2); padding: 5px 12px; border-radius: 15px; font-size: 0.9em;">📰 2 条新闻</span>
-                <span style="background: rgba(255,255,255,0.2); padding: 5px 12px; border-radius: 15px; font-size: 0.9em;">📝 1 篇博客</span>
-                <span style="background: rgba(255,255,255,0.2); padding: 5px 12px; border-radius: 15px; font-size: 0.9em;">💰 5 条融资</span>
-                <span style="background: rgba(255,255,255,0.2); padding: 5px 12px; border-radius: 15px; font-size: 0.9em;">🧠 5 篇论文</span>
+            <div class="stat-card">
+                <div class="icon">📝</div>
+                <h3 id="total-papers">0</h3>
+                <p>学术论文</p>
             </div>
-            <div style="text-align: center; margin-top: 25px;">
-                <a href="issues/2026-03-09.html" class="issue-link" style="background: white; color: #764ba2; font-size: 1.1em; padding: 12px 30px;">
-                    📖 阅读全文 →
-                </a>
+            <div class="stat-card">
+                <div class="icon">💰</div>
+                <h3 id="total-investments">0</h3>
+                <p>投融资</p>
+            </div>
+            <div class="stat-card">
+                <div class="icon">🔧</div>
+                <h3 id="total-projects">0</h3>
+                <p>开源项目</p>
             </div>
         </div>
-
-        <div class="card">
-            <h2>📚 历史日报</h2>
-            <ul class="issue-list">
-                <li class="issue-item">
-                    <div class="issue-info">
-                        <div class="issue-date">
-                            2026 年 03 月 09 日
-                            <span class="issue-number">第 68 期</span>
-                        </div>
-                        <div class="issue-stats">
-                            📰 2 条新闻 · 📝 1 篇博客 · 💰 5 条融资 · 🧠 5 篇论文 · 总计 13 条
-                        </div>
-                    </div>
-                    <a href="issues/2026-03-09.html" class="issue-link">阅读</a>
-                </li>
-            </ul>
+        
+        <div id="daily-container" class="daily-grid">
+            <div class="loading">
+                <div class="loading-spinner">🐱</div>
+                <p>正在加载日报...</p>
+            </div>
         </div>
-
-        <div class="cat-signature">
-            <p><em>by bigpurr 🐱</em></p>
-            <p><em>Powered by OpenClaw</em></p>
-        </div>
+        
+        <footer>
+            <p>Generated by bigpurr 🐱 | 每日凌晨 2:00 自动更新</p>
+            <p>数据来源: arXiv, TechCrunch, GitHub</p>
+        </footer>
     </div>
-    <footer>
-        <p>
-            <a href="https://arxiv.org/search/?query=embodied+AI" target="_blank">arXiv Embodied AI</a> · 
-            <a href="https://github.com/Moxoo/embodied-ai-daily" target="_blank">GitHub</a>
-        </p>
-        <p>© 2026 Embodied AI Daily | Updated Daily at 06:30 CST</p>
-    </footer>
+    
+    <script>
+        // 日报数据配置
+        const dailyData = [
+            {
+                date: "2026-03-10",
+                title: "具身智能日报",
+                news: 3,
+                papers: 5,
+                investments: 2,
+                projects: 1,
+                preview: "今日亮点: Qualcomm 与 Neura Robotics 合作、Penguin-VL 视觉语言模型、Zoox 机器人出租车新进展、SUREON 手术推理模型...",
+                tags: ["机器人", "VLM", "手术AI", "水下机器人"],
+                link: "./2026/03/2026-03-10.html"
+            }
+        ];
+        
+        // 渲染日报卡片
+        function renderDailyCards() {
+            const container = document.getElementById('daily-container');
+            
+            if (dailyData.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; color: white; padding: 60px;">
+                        <p>暂无日报数据</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = dailyData.map(day => `
+                <a href="${day.link}" class="daily-card">
+                    <div class="card-header">
+                        <div class="card-date">${day.date}</div>
+                        <div class="card-title">${day.title}</div>
+                        <div class="card-badge">NEW</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-stats">
+                            <div class="card-stat">
+                                <span>📰</span> ${day.news} 新闻
+                            </div>
+                            <div class="card-stat">
+                                <span>📝</span> ${day.papers} 论文
+                            </div>
+                            <div class="card-stat">
+                                <span>💰</span> ${day.investments} 投资
+                            </div>
+                        </div>
+                        <div class="card-preview">${day.preview}</div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="tags">
+                            ${day.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                        </div>
+                        <div class="read-more">阅读更多 →</div>
+                    </div>
+                </a>
+            `).join('');
+            
+            // 更新统计数据
+            updateStats();
+        }
+        
+        // 更新统计数据
+        function updateStats() {
+            const totals = dailyData.reduce((acc, day) => ({
+                news: acc.news + day.news,
+                papers: acc.papers + day.papers,
+                investments: acc.investments + day.investments,
+                projects: acc.projects + day.projects
+            }), { news: 0, papers: 0, investments: 0, projects: 0 });
+            
+            document.getElementById('total-news').textContent = totals.news;
+            document.getElementById('total-papers').textContent = totals.papers;
+            document.getElementById('total-investments').textContent = totals.investments;
+            document.getElementById('total-projects').textContent = totals.projects;
+        }
+        
+        // 页面加载完成后渲染
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(renderDailyCards, 500);
+        });
+    </script>
 </body>
 </html>
