@@ -269,18 +269,6 @@ class EmbodiedAIDailyCollector:
     {github_html}
 </body>
 </html>"""
-        .item-meta {{ color: #666; font-size: 0.9rem; margin-bottom: 10px; }}
-        .item-link {{ color: #667eea; text-decoration: none; }}
-    </style>
-</head>
-<body>
-    <div class="header">
-        <h1>具身智能日报</h1>
-        <div>{self.date_str}</div>
-    </div>
-    {papers_html}
-</body>
-</html>"""
     
     def update_index(self):
         """更新首页索引"""
