@@ -271,9 +271,136 @@ class EmbodiedAIDailyCollector:
 </html>"""
     
     def update_index(self):
-        """更新首页索引"""
-        # 这里可以更新 index.html 的卡片数据
-        pass
+        """扫描所有日报，更新 index.html 的 dailyData"""
+        import re, glob
+        
+        index_file = self.workspace / "index.html"
+        if not index_file.exists():
+            print("⚠️ index.html 不存在，跳过首页更新")
+            return
+        
+        # 扫描所有 md 日报文件
+        md_files = sorted(glob.glob(str(self.workspace / "**/*.md"), recursive=True), reverse=True)
+        
+        daily_entries = []
+        for md_path in md_files:
+            md_path = Path(md_path)
+            # 只匹配 YYYY-MM-DD.md 格式的日报文件
+            if not re.match(r'^\d{4}-\d{2}-\d{2}\.md$', md_path.name):
+                continue
+            
+            date_str = md_path.stem  # e.g. 2026-03-12
+            content = md_path.read_text(encoding='utf-8')
+            
+            # 提取论文数：先尝试括号格式，再数论文条目
+            paper_match = re.search(r'最新论文\s*\((\d+)\s*篇\)', content)
+            if paper_match:
+                paper_count = int(paper_match.group(1))
+            else:
+                # 数 "### 1." "### 2." 等在论文章节下的条目
+                paper_section = re.search(r'(?:最新论文|📝).*?\n(.*?)(?=\n## |\Z)', content, re.DOTALL)
+                if paper_section:
+                    paper_count = len(re.findall(r'###\s*\d+\.', paper_section.group(1)))
+                else:
+                    paper_count = 0
+            
+            # 提取项目数：先尝试括号格式，再数项目条目
+            project_match = re.search(r'GitHub\s*热门项目\s*\((\d+)\s*个\)', content)
+            if project_match:
+                project_count = int(project_match.group(1))
+            else:
+                # 数热门开源项目/GitHub 章节下的 ### 条目
+                proj_section = re.search(r'(?:热门开源项目|热门项目|🔧).*?\n(.*?)(?=\n## |\Z)', content, re.DOTALL)
+                if proj_section:
+                    project_count = len(re.findall(r'###\s+', proj_section.group(1)))
+                else:
+                    project_count = 0
+            
+            # 提取预览：取前几个论文/项目标题
+            titles = re.findall(r'###\s*\d+\.\s*(.+)', content)
+            preview = "今日亮点: " + "、".join(titles[:4]) + "..." if titles else "暂无预览"
+            # 转义 JS 字符串中的特殊字符
+            preview = preview.replace('\\', '\\\\').replace('"', '\\"').replace("'", "\\'")
+            
+            # 提取标签：从论文标题中提取关键词
+            tags = []
+            tag_keywords = {
+                "机器人": ["robot", "manipulation", "grasp", "locomotion", "humanoid"],
+                "VLM": ["vision-language", "vlm", "visual", "multimodal"],
+                "VLA": ["vla", "vision-language-action"],
+                "导航": ["navigation", "nav", "slam", "mapping"],
+                "强化学习": ["reinforcement", "rl", "reward", "policy"],
+                "手术AI": ["surgery", "surgical", "medical"],
+                "自动驾驶": ["autonomous driving", "self-driving", "vehicle"],
+                "Agent": ["agent", "tool-use", "planning"],
+                "LLM": ["llm", "language model", "gpt", "transformer"],
+                "3D": ["3d", "point cloud", "nerf", "gaussian"],
+            }
+            content_lower = content.lower()
+            for tag, keywords in tag_keywords.items():
+                if any(kw in content_lower for kw in keywords):
+                    tags.append(tag)
+            tags = tags[:4]  # 最多4个标签
+            
+            # 提取新闻数：国外科技动态下的 #### 条目
+            news_count = 0
+            news_section = re.search(r'(?:国外科技动态|国内.*动态|🌍|🇨🇳).*?\n(.*?)(?=\n## |\Z)', content, re.DOTALL)
+            if news_section:
+                news_count = len(re.findall(r'####\s+', news_section.group(1)))
+            
+            # 提取投资数
+            invest_count = 0
+            invest_section = re.search(r'(?:投资与融资|💰).*?\n(.*?)(?=\n## |\Z)', content, re.DOTALL)
+            if invest_section:
+                invest_count = len(re.findall(r'###\s+', invest_section.group(1)))
+            
+            # 计算相对链接
+            rel_path = str(md_path.parent / f"{date_str}.html").replace(str(self.workspace) + "/", "./")
+            
+            daily_entries.append({
+                'date': date_str,
+                'news': news_count,
+                'papers': paper_count,
+                'investments': invest_count,
+                'projects': project_count,
+                'preview': preview,
+                'tags': tags,
+                'link': rel_path,
+            })
+        
+        if not daily_entries:
+            print("⚠️ 没有找到任何日报文件")
+            return
+        
+        # 生成 JS 数组
+        js_items = []
+        for entry in daily_entries:
+            tags_js = json.dumps(entry['tags'], ensure_ascii=False)
+            js_items.append(f"""            {{
+                date: "{entry['date']}",
+                title: "具身智能日报",
+                news: {entry['news']},
+                papers: {entry['papers']},
+                investments: {entry['investments']},
+                projects: {entry['projects']},
+                preview: "{entry['preview']}",
+                tags: {tags_js},
+                link: "{entry['link']}"
+            }}""")
+        
+        new_data = "const dailyData = [\n" + ",\n".join(js_items) + "\n        ];"
+        
+        # 替换 index.html 中的 dailyData
+        index_content = index_file.read_text(encoding='utf-8')
+        pattern = r'const dailyData = \[.*?\];'
+        new_content = re.sub(pattern, new_data, index_content, flags=re.DOTALL)
+        
+        if new_content == index_content:
+            print("⚠️ 未能匹配 dailyData，index.html 未更新")
+            return
+        
+        index_file.write_text(new_content, encoding='utf-8')
+        print(f"✅ index.html 已更新，共 {len(daily_entries)} 篇日报")
     
     def push_to_github(self):
         """推送到 GitHub"""
@@ -314,7 +441,10 @@ class EmbodiedAIDailyCollector:
         # 1. 生成日报
         paper_count, project_count = self.generate_daily()
         
-        # 2. 推送到 GitHub（在 Telegram 之前）
+        # 2. 更新首页索引
+        self.update_index()
+        
+        # 3. 推送到 GitHub（在 Telegram 之前）
         if self.push_to_github():
             print(f"🌐 站点已更新: https://moxoo.github.io/embodied-ai-daily/")
         else:
